@@ -110,10 +110,13 @@
     padding: 10px 6px;
     border: 2px solid var(--ink);
     background: #fff;
+    color: var(--ink);
     font-size: 12px;
     font-weight: 700;
     cursor: pointer;
     border-radius: 8px;
+    -webkit-appearance: none;
+    appearance: none;
   }
   .shape-btn.active{
     background: var(--violet);
@@ -169,6 +172,14 @@
     cursor: default;
     transition: all .2s ease;
   }
+  #mockBtn2{
+    background: none;
+    padding: 12px 26px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: default;
+    transition: all .2s ease;
+  }
 
   .summary{
     margin-top: 20px;
@@ -188,9 +199,12 @@
     font-size: 13px;
     border: 2px solid var(--ink);
     background: #fff;
+    color: var(--ink);
     padding: 8px 14px;
     border-radius: 8px;
     cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
   }
   .copy-btn.copied{
     background: var(--violet);
@@ -206,7 +220,17 @@
 
   <div class="layout">
     <div class="panel">
-      <h2>🎨 Paleta de colores</h2>
+      <h2>📝 Contenido</h2>
+      <div class="field">
+        <label>Título</label>
+        <input type="text" id="titleInput" value="Tu lugar para crecer">
+      </div>
+      <div class="field">
+        <label>Descripción</label>
+        <input type="text" id="descInput" value="Un espacio pensado para vos, con las herramientas y la comunidad que necesitás.">
+      </div>
+
+      <h2 style="margin-top:22px">🎨 Paleta de colores</h2>
       <div class="field">
         <label>Principal</label>
         <div class="color-row">
@@ -261,7 +285,10 @@
         <div id="mock">
           <h3 id="mockTitle">Tu lugar para crecer</h3>
           <p id="mockText">Un espacio pensado para vos, con las herramientas y la comunidad que necesitás.</p>
-          <button id="mockBtn">Quiero unirme</button>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button id="mockBtn">Quiero unirme</button>
+            <button id="mockBtn2">Saber más</button>
+          </div>
         </div>
       </div>
 
@@ -286,6 +313,9 @@
   const mockTitle = document.getElementById('mockTitle');
   const mockText = document.getElementById('mockText');
   const mockBtn = document.getElementById('mockBtn');
+  const mockBtn2 = document.getElementById('mockBtn2');
+  const titleInput = document.getElementById('titleInput');
+  const descInput = document.getElementById('descInput');
   const summary = document.getElementById('summary');
   const copyBtn = document.getElementById('copyBtn');
 
@@ -302,6 +332,9 @@
     hexSecondary.textContent = s;
     hexBg.textContent = bg;
 
+    mockTitle.textContent = titleInput.value || 'Tu título acá';
+    mockText.textContent = descInput.value || 'Tu descripción acá';
+
     mock.style.background = bg;
     mockTitle.style.color = p;
     mockTitle.style.fontFamily = font;
@@ -311,7 +344,10 @@
     mockBtn.style.color = '#fff';
     mockBtn.style.borderRadius = radius + 'px';
     mockBtn.style.fontFamily = font;
-    mockBtn.style.borderBottom = '4px solid ' + s;
+    mockBtn2.style.background = s;
+    mockBtn2.style.color = '#fff';
+    mockBtn2.style.borderRadius = radius + 'px';
+    mockBtn2.style.fontFamily = font;
 
     const ref = imgRef.value.trim();
     summary.innerHTML =
@@ -324,7 +360,7 @@
     copyBtn.textContent = 'Copiar resumen';
   }
 
-  [colorPrimary, colorSecondary, colorBg, fontSelect, imgRef].forEach(el => {
+  [colorPrimary, colorSecondary, colorBg, fontSelect, imgRef, titleInput, descInput].forEach(el => {
     el.addEventListener('input', update);
   });
 
