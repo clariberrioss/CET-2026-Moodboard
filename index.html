@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Armá tu moodboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Poppins:wght@400;600;700&family=Quicksand:wght@500;700&family=Playfair+Display:wght@600;700&family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream: #F3F0E8;
+    --ink: #17140F;
+    --violet: #3B2ED9;
+    --violet-soft: #EDEBFB;
+    --line: #D8D3C6;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html{ scroll-padding-top: env(safe-area-inset-top, 0px); }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+  }
+  .wrap{
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 36px 22px 60px;
+  }
+  h1{
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: clamp(24px, 4.5vw, 34px);
+    margin: 0 0 6px;
+  }
+  p.sub{
+    margin: 0 0 26px;
+    color: #5c584c;
+    font-size: 14px;
+  }
+  .layout{
+    display:grid;
+    grid-template-columns: 320px 1fr;
+    gap: 22px;
+    align-items: start;
+  }
+  @media (max-width: 760px){
+    .layout{ grid-template-columns: 1fr; }
+  }
+  .panel{
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .panel h2{
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 16px;
+    margin: 0 0 14px;
+  }
+  .field{ margin-bottom: 18px; }
+  .field:last-child{ margin-bottom: 0; }
+  .field label{
+    display:block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #5c584c;
+    margin-bottom: 6px;
+  }
+  .color-row{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+  input[type="color"]{
+    width: 42px;
+    height: 42px;
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    padding: 0;
+    cursor: pointer;
+    background: none;
+  }
+  .color-hex{
+    font-family: monospace;
+    font-size: 13px;
+    color: #5c584c;
+  }
+  select{
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    background: #fff;
+    color: var(--ink);
+  }
+  .shape-row{
+    display:flex;
+    gap: 8px;
+  }
+  .shape-btn{
+    flex:1;
+    padding: 10px 6px;
+    border: 2px solid var(--ink);
+    background: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  .shape-btn.active{
+    background: var(--violet);
+    color: #fff;
+    border-color: var(--violet);
+  }
+  input[type="text"]{
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+  }
+
+  .preview-panel{
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .preview-label{
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px 16px;
+    background: var(--violet-soft);
+    color: var(--violet);
+    border-bottom: 2px solid var(--ink);
+  }
+  #mock{
+    padding: 34px 28px;
+    min-height: 220px;
+    transition: background .2s ease;
+  }
+  #mock h3{
+    margin: 0 0 10px;
+    font-size: 26px;
+    transition: font-family .2s ease, color .2s ease;
+  }
+  #mock p{
+    margin: 0 0 18px;
+    font-size: 15px;
+    line-height: 1.5;
+    max-width: 420px;
+    transition: font-family .2s ease, color .2s ease;
+  }
+  #mockBtn{
+    border: none;
+    padding: 12px 26px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: default;
+    transition: all .2s ease;
+  }
+
+  .summary{
+    margin-top: 20px;
+    background: #fff;
+    border: 2px dashed var(--line);
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+  .summary strong{ color: var(--violet); }
+  .copy-btn{
+    margin-top: 10px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    border: 2px solid var(--ink);
+    background: #fff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .copy-btn.copied{
+    background: var(--violet);
+    color: #fff;
+    border-color: var(--violet);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Armá tu moodboard</h1>
+  <p class="sub">Elegí colores, tipografía y estilo de botón. Vas a ver el resultado en vivo a la derecha — esto es lo que le vas a pedir a la IA más tarde.</p>
+
+  <div class="layout">
+    <div class="panel">
+      <h2>🎨 Paleta de colores</h2>
+      <div class="field">
+        <label>Principal</label>
+        <div class="color-row">
+          <input type="color" id="colorPrimary" value="#3B2ED9">
+          <span class="color-hex" id="hexPrimary">#3B2ED9</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Secundario</label>
+        <div class="color-row">
+          <input type="color" id="colorSecondary" value="#F5C64B">
+          <span class="color-hex" id="hexSecondary">#F5C64B</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Fondo</label>
+        <div class="color-row">
+          <input type="color" id="colorBg" value="#F3F0E8">
+          <span class="color-hex" id="hexBg">#F3F0E8</span>
+        </div>
+      </div>
+
+      <h2 style="margin-top:22px">🔤 Tipografía</h2>
+      <div class="field">
+        <select id="fontSelect">
+          <option value="'Poppins', sans-serif" data-name="Poppins (moderna)">Poppins — moderna</option>
+          <option value="'Quicksand', sans-serif" data-name="Quicksand (redondeada)">Quicksand — redondeada</option>
+          <option value="'Playfair Display', serif" data-name="Playfair Display (elegante)">Playfair Display — elegante</option>
+          <option value="'Comic Neue', sans-serif" data-name="Comic Neue (divertida)">Comic Neue — divertida</option>
+        </select>
+      </div>
+
+      <h2 style="margin-top:22px">🔘 Estilo de botón</h2>
+      <div class="field">
+        <div class="shape-row">
+          <button class="shape-btn active" data-shape="4">Cuadrado</button>
+          <button class="shape-btn" data-shape="12">Redondeado</button>
+          <button class="shape-btn" data-shape="999">Pill</button>
+        </div>
+      </div>
+
+      <h2 style="margin-top:22px">🖼️ Referencia (opcional)</h2>
+      <div class="field">
+        <label>¿Qué tipo de imagen imaginan?</label>
+        <input type="text" id="imgRef" placeholder="ej: foto cálida, ilustración plana...">
+      </div>
+    </div>
+
+    <div>
+      <div class="preview-panel">
+        <div class="preview-label">Vista previa</div>
+        <div id="mock">
+          <h3 id="mockTitle">Tu lugar para crecer</h3>
+          <p id="mockText">Un espacio pensado para vos, con las herramientas y la comunidad que necesitás.</p>
+          <button id="mockBtn">Quiero unirme</button>
+        </div>
+      </div>
+
+      <div class="summary" id="summary"></div>
+      <button class="copy-btn" id="copyBtn">Copiar resumen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const colorPrimary = document.getElementById('colorPrimary');
+  const colorSecondary = document.getElementById('colorSecondary');
+  const colorBg = document.getElementById('colorBg');
+  const hexPrimary = document.getElementById('hexPrimary');
+  const hexSecondary = document.getElementById('hexSecondary');
+  const hexBg = document.getElementById('hexBg');
+  const fontSelect = document.getElementById('fontSelect');
+  const imgRef = document.getElementById('imgRef');
+  const shapeBtns = document.querySelectorAll('.shape-btn');
+
+  const mock = document.getElementById('mock');
+  const mockTitle = document.getElementById('mockTitle');
+  const mockText = document.getElementById('mockText');
+  const mockBtn = document.getElementById('mockBtn');
+  const summary = document.getElementById('summary');
+  const copyBtn = document.getElementById('copyBtn');
+
+  let radius = 4;
+
+  function update(){
+    const p = colorPrimary.value;
+    const s = colorSecondary.value;
+    const bg = colorBg.value;
+    const font = fontSelect.value;
+    const fontName = fontSelect.options[fontSelect.selectedIndex].dataset.name;
+
+    hexPrimary.textContent = p;
+    hexSecondary.textContent = s;
+    hexBg.textContent = bg;
+
+    mock.style.background = bg;
+    mockTitle.style.color = p;
+    mockTitle.style.fontFamily = font;
+    mockText.style.color = '#33322c';
+    mockText.style.fontFamily = font;
+    mockBtn.style.background = p;
+    mockBtn.style.color = '#fff';
+    mockBtn.style.borderRadius = radius + 'px';
+    mockBtn.style.fontFamily = font;
+    mockBtn.style.borderBottom = '4px solid ' + s;
+
+    const ref = imgRef.value.trim();
+    summary.innerHTML =
+      '<strong>Colores:</strong> principal ' + p + ', secundario ' + s + ', fondo ' + bg + '<br>' +
+      '<strong>Tipografía:</strong> ' + fontName + '<br>' +
+      '<strong>Botones:</strong> bordes ' + (radius == 4 ? 'cuadrados' : radius == 12 ? 'redondeados' : 'tipo pill') +
+      (ref ? '<br><strong>Referencia visual:</strong> ' + ref : '');
+
+    copyBtn.classList.remove('copied');
+    copyBtn.textContent = 'Copiar resumen';
+  }
+
+  [colorPrimary, colorSecondary, colorBg, fontSelect, imgRef].forEach(el => {
+    el.addEventListener('input', update);
+  });
+
+  shapeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      shapeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      radius = Number(btn.dataset.shape);
+      update();
+    });
+  });
+
+  copyBtn.addEventListener('click', async () => {
+    const text = summary.innerText;
+    try {
+      await navigator.clipboard.writeText(text);
+      copyBtn.classList.add('copied');
+      copyBtn.textContent = '¡Copiado!';
+    } catch(e){
+      copyBtn.textContent = 'No se pudo copiar';
+    }
+  });
+
+  update();
+</script>
+</body>
+</html>
